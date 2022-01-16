@@ -28,41 +28,16 @@ class fun(commands.Cog):
             'I am asking everyone here why there is no one coming to spawn? Are you all too pussy? Or are all of you like tyrannosaurus u only come with a stack of Egaps, eat all of them and die in 5 minutes to people who have been playing a week? Sincerely - come to spawn retards \n\n- best sleepylessons quote')
 
     @commands.command()
-    async def skin(self, ctx, player=None):
+    async def skin(self, ctx, player=None, direction='right'):
         user_id = ctx.author
         print(f'{user_id} used skin')
-        ud = MojangAPI.get_uuid(player)
         if player is None:
             await ctx.send('I need a player name to do that')
-        elif ud == 'ff8a62c2b2d743348794e0af3b9ad8c2':
-            response = self.sg.get_skin_rendered(user=player)
-            embed = discord.Embed(title=f'{player}\'s skin',
-                                  colour=discord.Colour.red())
-            embed.set_image(url=response)  # sets the embeds image as the player skin using the url
-            await ctx.send(embed=embed)
-        elif ud == '408fb01f3ac54fa7aa659fba051c9c51':
-            response = self.sg.get_skin_rendered(user=player)
-            embed = discord.Embed(title=f'{player}\'s skin',
-                                  colour=discord.Colour.red())
-            embed.set_image(url=response)  # sets the embeds image as the player skin using the url
-            await ctx.send(embed=embed)
-        elif ud == '4aaa03d8446648239076797ba5014aaa':
-            response = self.sg.get_skin_rendered(user=player)
-            embed = discord.Embed(title=f'{player}\'s skin',
-                                  colour=discord.Colour.purple())
-            embed.set_image(url=response)  # sets the embeds image as the player skin using the url
-            await ctx.send(embed=embed)
-        elif ud == '4e89c47134834763911941f580ebfdb3':
-            response = self.sg.get_skin_rendered(user=player)
-            embed = discord.Embed(title=f'{player}\'s skin',
-                                  colour=discord.Colour.gold())
-            embed.set_image(url=response)  # sets the embeds image as the player skin using the url
-            await ctx.send(embed=embed)
         else:
-            response = self.sg.get_skin_rendered(user=player)
-            embed = discord.Embed(title=f'{player}\'s skin',
+            uuid = MojangAPI.get_uuid(player)
+            embed = discord.Embed(title=f'{player}\'s skin', url=f'https://mc-heads.net/body/{uuid}/{direction}',
                                   colour=discord.Colour.blue())
-            embed.set_image(url=response)  # sets the embeds image as the player skin using the url
+            embed.set_image(url=f'https://mc-heads.net/body/{uuid}/{direction}')
             await ctx.send(embed=embed)
 
     @commands.command()  # says the message that the person says
