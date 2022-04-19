@@ -2,6 +2,8 @@ from discord.ext import commands
 from discord.utils import get
 import discord
 
+from main import client
+
 
 class cat(commands.Cog):  # all admin commands go here
 
@@ -66,6 +68,31 @@ class cat(commands.Cog):  # all admin commands go here
             role = get(member.guild.roles, name="stop talking")
             await member.remove_roles(role)
             await ctx.send(f'{member} was unmuted for {reason}')
+
+    @commands.command()
+    # @commands.has_permissions(ban_members=True)
+    async def location(self, ctx, loc=None):
+        activeservers = client.guilds
+        channel = client.get_channel(932300104805797928)  # 932300104805797928
+        set = 6
+        count = 0
+        for guild in activeservers:
+            count += 1
+            print(guild.name)
+        await ctx.send('sent')
+        await channel.send('--- server output ---')
+        await channel.send(f'servers: {count}')
+        if loc == 'loc':
+            await channel.send('locations:')
+            for guild in activeservers:
+                await channel.send(guild.name)
+        elif count > set:
+            await ctx.send('WARNING: server count too high')
+            await channel.send('WARNING:')
+            await channel.send(f'server amount is to high')
+            await channel.send(f'bot should be in {set} servers')
+            await channel.send(f'bot is in {count} servers')
+        await channel.send(f'---------------------')
 
 
 def setup(client):
