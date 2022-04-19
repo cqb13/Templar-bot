@@ -1,12 +1,11 @@
 from discord.ext import commands
+from webserver import keep_alive
 import discord
+import os
 
 client = commands.Bot(command_prefix='!', help_command=None)
 
-TOKEN = ''  # the key of the bot
-
-
-cogs = ['cogs.utility', 'cogs.fun', 'cogs.pic', 'cogs.cat']
+cogs = ['cogs.util', 'cogs.fun', 'cogs.pic', 'cogs.cat']
 for cog in cogs:
     try:
         client.load_extension(cog)  # loads cogs
@@ -21,33 +20,9 @@ async def on_ready():
 
 
 @client.command()
-async def talk(ctx):
-    error = False
-    user_id = f'{ctx.author}'
-    embed = discord.Embed(title='talk',
-                          description=f'information from talk command',
-                          colour=discord.Colour.blue())
-    ID = input('enter channel ID')
-    channel = client.get_channel(int(ID))
-    message = input('enter a message')
-    try:
-        a = await channel.send(message)
-
-    except Exception as e:
-        print(e)
-        embed.add_field(name="info", value=f'channel ID: {ID}\nmessage: {message}\nerror: {e}')
-        error = True
-    # noinspection PySimplifyBooleanCheck
-    if error != True:
-        embed.add_field(name="info", value=f'channel ID: {ID}\nmessage: {message}')  # lazy so did it again
-        await ctx.send(embed=embed)
-    else:
-        await ctx.send(embed=embed)
-    print(f'{user_id} used talk\nchannel ID: {ID}\nmessage: {message}')
-
-
-@client.command()
 async def help(ctx):
+    user_id = ctx.author
+    print(f'{user_id} used help')
     embed = discord.Embed(title='help',
                           colour=discord.Colour.blue())
     embed.add_field(name='utility',
@@ -61,10 +36,7 @@ async def help(ctx):
                           f'- skin\n'
                           f'- say\n'
                           f'- cat\n'
-                          f'- fox\n'
-                          f'- NA\n'
-                          f'- IA\n'
-                          f'- PA')
+                          f'- fox\n')
     await ctx.send(embed=embed)
 
 
@@ -104,4 +76,6 @@ async def ld(ctx, cogname=None, amount=1):
         print(f'{cogname} loaded')  # prints if cog loaded
 
 
+keep_alive()
+TOKEN = os.environ.get("DISCORD_BOT_SECRET")
 client.run(TOKEN)
